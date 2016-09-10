@@ -1,10 +1,15 @@
+
 [% BLOCK tweetcontent %]
     <div class="entry-header">
-        <img src="[% status.user.profile_image_url %]" />
-        <div class="entry-info">[% status.user.name %]<br>
-        @[% status.user.screen_name %]<br>
-        posted at
-        [% status.created_at %]:
+        <img class="profile-img" src="[% status.user.profile_image_url %]" />
+        <div>
+          <div class="entry-info">
+          [% status.user.name %]<br>
+          </div>
+          <div class="interactive-info">
+          @[% status.user.screen_name %]<br>
+          posted at [% status.created_at %]:
+          </div>
         </div>
     </div>
     <div class="tweet">
@@ -15,7 +20,7 @@
             <div class="media">
             [% FOREACH media IN status.entities.media %]
                 [% IF media.type == "photo" %]
-                    <img src="[% media.media_url %]" />
+                    <img src="[% media.media_url %]" alt="Img"/>
                 [% ELSE %]
                     (Unsupported media type "[% media.type %]", <a href="[% media.url %]">Click here to see it</a>
                 [% END %]
@@ -34,6 +39,7 @@
     <div class="entry-external-url">
         <a href="https://twitter.com/[% status.user.screen_name %]/status/[% status.id %]">See on twitter</a>
     </div>
+
 [% END %]
 
 <div id="page">
