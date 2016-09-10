@@ -3,7 +3,9 @@
         [% status.user.screen_name %] posted at [% status.created_at %]:
     </div>
     <div class="tweet">
-        [% status.text %]
+        <div class="tweet-text">
+            [% status.text %]
+        </div>
         [% IF status.entities.media %]
             <div class="media">
             [% FOREACH media IN status.entities.media %]
