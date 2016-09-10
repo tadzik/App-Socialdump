@@ -1,0 +1,40 @@
+[% BLOCK tweetcontent %]
+    <div class="entry-header">
+        [% status.user.screen_name %] posted at [% status.created_at %]:
+    </div>
+    <div class="tweet">
+        [% status.text %]
+        [% IF status.entities.media %]
+            <div class="media">
+            [% FOREACH media IN status.entities.media %]
+                [% IF media.type == "photo" %]
+                    <img src="[% media.media_url %]" />
+                [% ELSE %]
+                    (Unsupported media type "[% media.type %]", <a href="[% media.url %]">Click here to see it</a>
+                [% END %]
+            [% END %]
+            </div>
+        [% END %]
+        [% IF status.retweeted_status %]
+            Retweeted content:
+            [% PROCESS tweetcontent status=status.retweeted_status %]
+        [% END %]
+        [% IF status.quoted_status %]
+            Quoted content:
+            [% PROCESS tweetcontent status=status.quoted_status %]
+        [% END %]
+    </div>
+    <div class="entry-external-url">
+        <a href="https://twitter.com/[% status.user.screen_name %]/status/[% status.id %]">See on twitter</a>
+    </div>
+[% END %]
+
+<div id="page">
+    <div id="content">
+    [% FOREACH status IN statuses %]
+        <div class="status">
+            [% PROCESS tweetcontent status=status %]
+        </div>
+    [% END %]
+    </div>
+</div>
