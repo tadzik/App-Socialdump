@@ -1,6 +1,10 @@
 [% BLOCK tweetcontent %]
     <div class="entry-header">
-        [% status.user.screen_name %] posted at [% status.created_at %]:
+        <img src="[% status.user.profile_image_url %]" />
+        [% status.user.name %]
+        @[% status.user.screen_name %]
+        posted at
+        [% status.created_at %]:
     </div>
     <div class="tweet">
         <div class="tweet-text">
