@@ -1,3 +1,5 @@
+requires "TAP::Harness" => "0";
+
 requires "Dancer2" => "0.203000";
 requires "Template" => "0";
 requires "File::Slurp" => "0";

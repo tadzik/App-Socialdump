@@ -35,6 +35,35 @@ DISTRIBUTIONS
       App::Cmd::Tester::CaptureExternal 0.331
       App::Cmd::Tester::Exited 0.331
       App::Cmd::Tester::Result 0.331
+      Test::BrokenCmd undef
+      Test::BrokenCmd::Command undef
+      Test::IgnoreCommand undef
+      Test::IgnoreCommand::Command undef
+      Test::MyCmd 0.123
+      Test::MyCmd2 undef
+      Test::MyCmd2::Command::foo undef
+      Test::MyCmd2::Command::foo::bar undef
+      Test::MyCmd::Command::exit undef
+      Test::MyCmd::Command::frobulate undef
+      Test::MyCmd::Command::hello undef
+      Test::MyCmd::Command::justusage undef
+      Test::MyCmd::Command::stock undef
+      Test::MyCmdAbbrev undef
+      Test::MyCmdAbbrev::Command::bar undef
+      Test::MyCmdAbbrev::Command::baz undef
+      Test::MyCmdAbbrev::Command::foo undef
+      Test::MySimple undef
+      Test::WSNCC undef
+      Test::WSNCC::Command::blort undef
+      Test::WSOF undef
+      Test::WSOF::Command::poot undef
+      Test::WithCallback undef
+      Test::WithCallback::Command::lol undef
+      Test::WithSetup undef
+      Test::WithSetup::Command undef
+      Test::WithSetup::Command::alfie undef
+      Test::WithSetup::Command::bertie undef
+      Test::XyzzyPlugin undef
     requirements:
       Capture::Tiny 0.13
       Carp 0
@@ -412,6 +441,7 @@ DISTRIBUTIONS
   ExtUtils-MakeMaker-7.24
     pathname: B/BI/BINGOS/ExtUtils-MakeMaker-7.24.tar.gz
     provides:
+      DynaLoader 7.24
       ExtUtils::Command 7.24
       ExtUtils::Command::MM 7.24
       ExtUtils::Liblist 7.24
@@ -447,6 +477,7 @@ DISTRIBUTIONS
       ExtUtils::testlib 7.24
       MM 7.24
       MY 7.24
+      in 7.24
     requirements:
       Data::Dumper 0
       Encode 0
@@ -490,7 +521,6 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       Fcntl 0
       POSIX 0
-      perl 5.004
   Filesys-Notify-Simple-0.12
     pathname: M/MI/MIYAGAWA/Filesys-Notify-Simple-0.12.tar.gz
     provides:
@@ -546,6 +576,7 @@ DISTRIBUTIONS
       HTTP::Body::UrlEncoded 1.22
       HTTP::Body::XForms 1.22
       HTTP::Body::XFormsMultipart 1.22
+      PAML undef
     requirements:
       Carp 0
       Digest::MD5 0
@@ -602,6 +633,22 @@ DISTRIBUTIONS
       MIME::QuotedPrint 0
       URI 1.10
       perl 5.008001
+  HTTP-Tiny-0.064
+    pathname: D/DA/DAGOLDEN/HTTP-Tiny-0.064.tar.gz
+    provides:
+      HTTP::Tiny 0.064
+    requirements:
+      Carp 0
+      ExtUtils::MakeMaker 6.17
+      Fcntl 0
+      IO::Socket 0
+      MIME::Base64 0
+      Socket 0
+      Time::Local 0
+      bytes 0
+      perl 5.006
+      strict 0
+      warnings 0
   Hash-Merge-Simple-0.051
     pathname: R/RO/ROKR/Hash-Merge-Simple-0.051.tar.gz
     provides:
@@ -627,6 +674,14 @@ DISTRIBUTIONS
       Encode 2.10
       Exporter 5.57
       ExtUtils::MakeMaker 6.30
+  IO-Socket-IP-0.38
+    pathname: P/PE/PEVANS/IO-Socket-IP-0.38.tar.gz
+    provides:
+      IO::Socket::IP 0.38
+    requirements:
+      IO::Socket 0
+      Socket 1.97
+      Test::More 0.88
   IO-TieCombine-1.005
     pathname: R/RJ/RJBS/IO-TieCombine-1.005.tar.gz
     provides:
@@ -670,56 +725,6 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       perl 5.006002
-  Module-Build-0.4220
-    pathname: L/LE/LEONT/Module-Build-0.4220.tar.gz
-    provides:
-      Module::Build 0.4220
-      Module::Build::Base 0.4220
-      Module::Build::Compat 0.4220
-      Module::Build::Config 0.4220
-      Module::Build::Cookbook 0.4220
-      Module::Build::Dumper 0.4220
-      Module::Build::Notes 0.4220
-      Module::Build::PPMMaker 0.4220
-      Module::Build::Platform::Default 0.4220
-      Module::Build::Platform::MacOS 0.4220
-      Module::Build::Platform::Unix 0.4220
-      Module::Build::Platform::VMS 0.4220
-      Module::Build::Platform::VOS 0.4220
-      Module::Build::Platform::Windows 0.4220
-      Module::Build::Platform::aix 0.4220
-      Module::Build::Platform::cygwin 0.4220
-      Module::Build::Platform::darwin 0.4220
-      Module::Build::Platform::os2 0.4220
-      Module::Build::PodParser 0.4220
-    requirements:
-      CPAN::Meta 2.142060
-      CPAN::Meta::YAML 0.003
-      Cwd 0
-      Data::Dumper 0
-      ExtUtils::CBuilder 0.27
-      ExtUtils::Install 0
-      ExtUtils::Manifest 0
-      ExtUtils::Mkbootstrap 0
-      ExtUtils::ParseXS 2.21
-      File::Basename 0
-      File::Compare 0
-      File::Copy 0
-      File::Find 0
-      File::Path 0
-      File::Spec 0.82
-      File::Temp 0.15
-      Getopt::Long 0
-      Module::Metadata 1.000002
-      Parse::CPAN::Meta 1.4401
-      Perl::OSType 1
-      Pod::Man 2.17
-      TAP::Harness 3.29
-      Test::More 0.49
-      Text::Abbrev 0
-      Text::ParseWords 0
-      perl 5.006001
-      version 0.87
   Module-Build-Tiny-0.039
     pathname: L/LE/LEONT/Module-Build-Tiny-0.039.tar.gz
     provides:
@@ -855,6 +860,7 @@ DISTRIBUTIONS
   Package-Stash-XS-0.28
     pathname: D/DO/DOY/Package-Stash-XS-0.28.tar.gz
     provides:
+      CompileTime undef
       Package::Stash::XS 0.28
     requirements:
       ExtUtils::MakeMaker 6.30
@@ -1043,6 +1049,17 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       Scalar::Util 0
       perl 5.006
+  Scalar-List-Utils-1.45
+    pathname: P/PE/PEVANS/Scalar-List-Utils-1.45.tar.gz
+    provides:
+      List::Util 1.45
+      List::Util::XS 1.45
+      Scalar::Util 1.45
+      Sub::Util 1.45
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0
+      perl 5.006
   Stream-Buffered-0.03
     pathname: D/DO/DOY/Stream-Buffered-0.03.tar.gz
     provides:
@@ -1068,6 +1085,13 @@ DISTRIBUTIONS
     provides:
       Sub::Exporter 0.987
       Sub::Exporter::Util 0.987
+      Test::SubExporter::DashSetup undef
+      Test::SubExporter::Faux undef
+      Test::SubExporter::GroupGen undef
+      Test::SubExporter::GroupGenSubclass undef
+      Test::SubExporter::ObjGen undef
+      Test::SubExporter::ObjGen::Obj undef
+      Test::SubExporter::s_e undef
     requirements:
       Carp 0
       Data::OptList 0.100
@@ -1079,6 +1103,8 @@ DISTRIBUTIONS
   Sub-Exporter-Progressive-0.001012
     pathname: F/FR/FREW/Sub-Exporter-Progressive-0.001012.tar.gz
     provides:
+      A::Junk undef
+      A::JunkAll undef
       Sub::Exporter::Progressive 0.001012
     requirements:
       ExtUtils::MakeMaker 0
@@ -1257,6 +1283,60 @@ DISTRIBUTIONS
       perl 5.006001
       strict 0
       warnings 0
+  Test-Harness-3.36
+    pathname: L/LE/LEONT/Test-Harness-3.36.tar.gz
+    provides:
+      App::Prove 3.36
+      App::Prove::State 3.36
+      App::Prove::State::Result 3.36
+      App::Prove::State::Result::Test 3.36
+      Harness::Hook undef
+      TAP::Base 3.36
+      TAP::Formatter::Base 3.36
+      TAP::Formatter::Color 3.36
+      TAP::Formatter::Console 3.36
+      TAP::Formatter::Console::ParallelSession 3.36
+      TAP::Formatter::Console::Session 3.36
+      TAP::Formatter::File 3.36
+      TAP::Formatter::File::Session 3.36
+      TAP::Formatter::Session 3.36
+      TAP::Harness 3.36
+      TAP::Harness::Env 3.36
+      TAP::Object 3.36
+      TAP::Parser 3.36
+      TAP::Parser::Aggregator 3.36
+      TAP::Parser::Grammar 3.36
+      TAP::Parser::Iterator 3.36
+      TAP::Parser::Iterator::Array 3.36
+      TAP::Parser::Iterator::Process 3.36
+      TAP::Parser::Iterator::Stream 3.36
+      TAP::Parser::IteratorFactory 3.36
+      TAP::Parser::Multiplexer 3.36
+      TAP::Parser::Result 3.36
+      TAP::Parser::Result::Bailout 3.36
+      TAP::Parser::Result::Comment 3.36
+      TAP::Parser::Result::Plan 3.36
+      TAP::Parser::Result::Pragma 3.36
+      TAP::Parser::Result::Test 3.36
+      TAP::Parser::Result::Unknown 3.36
+      TAP::Parser::Result::Version 3.36
+      TAP::Parser::Result::YAML 3.36
+      TAP::Parser::ResultFactory 3.36
+      TAP::Parser::Scheduler 3.36
+      TAP::Parser::Scheduler::Job 3.36
+      TAP::Parser::Scheduler::Spinner 3.36
+      TAP::Parser::Source 3.36
+      TAP::Parser::SourceHandler 3.36
+      TAP::Parser::SourceHandler::Executable 3.36
+      TAP::Parser::SourceHandler::File 3.36
+      TAP::Parser::SourceHandler::Handle 3.36
+      TAP::Parser::SourceHandler::Perl 3.36
+      TAP::Parser::SourceHandler::RawTAP 3.36
+      TAP::Parser::YAMLish::Reader 3.36
+      TAP::Parser::YAMLish::Writer 3.36
+      Test::Harness 3.36
+    requirements:
+      ExtUtils::MakeMaker 0
   Test-LeakTrace-0.15
     pathname: G/GF/GFUJI/Test-LeakTrace-0.15.tar.gz
     provides:
@@ -1298,6 +1378,15 @@ DISTRIBUTIONS
   Test-Simple-1.302052
     pathname: E/EX/EXODIST/Test-Simple-1.302052.tar.gz
     provides:
+      Dev::Null undef
+      Dummy 0.01
+      MyTest undef
+      NoExporter 1.02
+      Overloaded undef
+      Overloaded::Compare undef
+      Overloaded::Ify undef
+      SigDie undef
+      SmallTest undef
       Test2 1.302052
       Test2::API 1.302052
       Test2::API::Breakage 1.302052
@@ -1333,17 +1422,21 @@ DISTRIBUTIONS
       Test::Builder::Formatter 1.302052
       Test::Builder::IO::Scalar 2.113
       Test::Builder::Module 1.302052
+      Test::Builder::NoOutput undef
+      Test::Builder::NoOutput::Tee undef
       Test::Builder::Tester 1.302052
       Test::Builder::Tester::Color 1.302052
       Test::Builder::Tester::Tie 1.302052
       Test::Builder::TodoDiag 1.302052
       Test::More 1.302052
       Test::Simple 1.302052
+      Test::Simple::Catch undef
       Test::Tester 1.302052
       Test::Tester::Capture 1.302052
       Test::Tester::CaptureRunner 1.302052
       Test::Tester::Delegate 1.302052
       Test::use::ok 1.302052
+      TieOut undef
       ok 1.302052
     requirements:
       ExtUtils::MakeMaker 0
