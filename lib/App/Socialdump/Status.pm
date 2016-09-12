@@ -39,4 +39,9 @@ sub from_twitter {
     );
 }
 
+sub to_string {
+    my ($self) = shift;
+    return sprintf "@%s: %s", $self->author->handle, $self->text;
+}
+
 1;

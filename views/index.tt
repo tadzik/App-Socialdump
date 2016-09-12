@@ -1,17 +1,18 @@
-[% BLOCK tweetcontent %]
+[% BLOCK author %]
     <div class="entry-header">
-        <img class="profile-img" src="[% status.author.avatar_url %]" />
-        <div>
-          <div class="entry-info">
-          [% status.author.displayname %]<br>
-          </div>
-          <div class="entry-postdate">
-          @[% status.author.handle %]<br>
-          posted at [% status.created_at.strftime("%T %F") %]:
-          </div>
+        <img class="profile-img" src="[% author.avatar_url %]" />
+        <div class="entry-info">
+            [% author.displayname %]<br>
+            @[% author.handle %]
         </div>
     </div>
-    <div class="tweet">
+[% END %]
+
+[% BLOCK tweetcontent %]
+    <div class="tweet [% IF NOT status.has_oc %]pure-repost[% END %]">
+        <div class="entry-postdate">
+            <a href="[% status.external_url %]">[% status.created_at.strftime("%T %F") %]:</a>
+        </div>
         [% IF status.has_oc %]
             <div class="tweet-text">
                 [% status.text %]
@@ -30,17 +31,25 @@
         [% END %]
         [% IF status.retweeted_status %]
             Retweeted content:
-            [% PROCESS tweetcontent status=status.retweeted_status %]
+            [% PROCESS tweet status=status.retweeted_status %]
         [% END %]
         [% IF status.quoted_status %]
             Quoted content:
-            [% PROCESS tweetcontent status=status.quoted_status %]
+            [% PROCESS tweet status=status.quoted_status %]
         [% END %]
     </div>
-    <div class="entry-external-url">
-        <a href="[% status.external_url %]">See on twitter</a>
-    </div>
+[% END %]
 
+[% BLOCK tweet %]
+    [% PROCESS author author=status.author %]
+    [% PROCESS tweetcontent status=status %]
+[% END %]
+
+[% BLOCK monologue %]
+    [% PROCESS author author=monologue.author %]
+    [% FOREACH status IN monologue.statuses %]
+        [% PROCESS tweetcontent status=status %]
+    [% END %]
 [% END %]
 
 <div id="page">
@@ -64,9 +73,13 @@
         </script>
     </div>
     <div id="content">
-    [% FOREACH status IN statuses %]
-        <div class="status[% IF NOT status.has_oc %] pure-repost[% END %]">
-            [% PROCESS tweetcontent status=status %]
+    [% FOREACH monologue IN monologues %]
+        <div class="monologue [% IF NOT monologue.has_oc %]pure-repost[% END %]">
+            [% IF monologue.length() == 1 %]
+                [% PROCESS tweet status=monologue.statuses.0 %]
+            [% ELSE %]
+                [% PROCESS monologue monologue=monologue %]
+            [% END %]
         </div>
     [% END %]
     </div>
