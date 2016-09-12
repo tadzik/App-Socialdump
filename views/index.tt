@@ -1,13 +1,13 @@
 
 [% BLOCK tweetcontent %]
     <div class="entry-header">
-        <img class="profile-img" src="[% status.user.profile_image_url %]" />
+        <img class="profile-img" src="[% status.author.avatar_url %]" />
         <div>
           <div class="entry-info">
-          [% status.user.name %]<br>
+          [% status.author.displayname %]<br>
           </div>
           <div class="entry-postdate">
-          @[% status.user.screen_name %]<br>
+          @[% status.author.handle %]<br>
           posted at [% status.created_at %]:
           </div>
         </div>
@@ -37,7 +37,7 @@
         [% END %]
     </div>
     <div class="entry-external-url">
-        <a href="https://twitter.com/[% status.user.screen_name %]/status/[% status.id %]">See on twitter</a>
+        <a href="[% status.external_url %]">See on twitter</a>
     </div>
 
 [% END %]

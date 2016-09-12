@@ -17,7 +17,8 @@ our $VERSION = '0.1';
 get '/' => sub {
     #my $statuses = $nt->home_timeline();
     my $statuses = from_json read_file('tweets.json');
-    template 'index', { statuses => $statuses };
+    my @statuses_o = map { App::Socialdump::Status->from_twitter($_) } @$statuses;
+    template 'index', { statuses => \@statuses_o };
 };
 
 true;
