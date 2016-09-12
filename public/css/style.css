@@ -58,6 +58,12 @@ p {
     box-shadow:3px 7px 30px 0px rgba(1,18,26,0.65);
 }
 
+#settings {
+    left:25px;
+    top:25px;
+    position:fixed;
+}
+
 .profile-img { border-radius:5px; }
 
 .entry-header {

@@ -7,7 +7,7 @@ use warnings;
 use Moo;
 
 has [qw/author
-        oc
+        has_oc
         text
         created_at
         retweeted_status
@@ -20,16 +20,16 @@ sub from_twitter {
     my $retweet = $json->{retweeted_status} ? $class->from_twitter($json->{retweeted_status}) : undef;
     my $quoted  = $json->{quoted_status}    ? $class->from_twitter($json->{quoted_status})    : undef;
     my $author  = App::Socialdump::Person->from_twitter($json->{user});
-    my $oc = 1;
+    my $has_oc = 1;
     if ($json->{text} =~ /^RT @\w+:/) {
-        $oc = 0;
+        $has_oc = 0;
     }
     my $at = DateTime::Format::DateParse->parse_datetime(
         $json->{created_at},
     );
     return $class->new(
         author           => $author,
-        oc               => $oc,
+        has_oc           => $has_oc,
         text             => $json->{text},
         created_at       => $at,
         retweeted_status => $retweet,

@@ -1,4 +1,3 @@
-
 [% BLOCK tweetcontent %]
     <div class="entry-header">
         <img class="profile-img" src="[% status.author.avatar_url %]" />
@@ -13,7 +12,7 @@
         </div>
     </div>
     <div class="tweet">
-        [% IF status.oc %]
+        [% IF status.has_oc %]
             <div class="tweet-text">
                 [% status.text %]
             </div>
@@ -45,9 +44,28 @@
 [% END %]
 
 <div id="page">
+    <div id="settings">
+        <form>
+            <input type="checkbox" id="hide-pure-reposts" onclick=hide_pure_reposts()>
+            <label for="hide-pure-reposts">Hide pure reposts (no original content)</label>
+        </form>
+
+        <script type="text/javascript">
+            function hide_pure_reposts() {
+                var display = "block";
+                if (document.getElementById("hide-pure-reposts").checked) {
+                    display = "none";
+                }
+                var reposts = document.querySelectorAll('.pure-repost');
+                for (var i = 0; i < reposts.length; i++) {
+                    reposts[i].style.display = display;
+                }
+            }
+        </script>
+    </div>
     <div id="content">
     [% FOREACH status IN statuses %]
-        <div class="status">
+        <div class="status[% IF NOT status.has_oc %] pure-repost[% END %]">
             [% PROCESS tweetcontent status=status %]
         </div>
     [% END %]

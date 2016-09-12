@@ -104,7 +104,7 @@ my $normal_status = q|
 
 my $o = App::Socialdump::Status->from_twitter(decode_json $normal_status);
 ok $o->isa('App::Socialdump::Status');
-ok $o->oc;
+ok $o->has_oc;
 
 my $pure_retweet = q|
 {
@@ -299,6 +299,6 @@ my $pure_retweet = q|
 
 $o = App::Socialdump::Status->from_twitter(decode_json $pure_retweet);
 ok $o->isa('App::Socialdump::Status');
-ok !$o->oc;
+ok !$o->has_oc;
 
 done_testing;

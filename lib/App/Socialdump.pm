@@ -1,5 +1,8 @@
 package App::Socialdump;
-#use Net::Twitter;
+use App::Socialdump::Status;
+use strict;
+use warnings;
+use Net::Twitter;
 use Dancer2;
 use File::Slurp;
 
