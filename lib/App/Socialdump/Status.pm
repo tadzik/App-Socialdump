@@ -1,5 +1,6 @@
 package App::Socialdump::Status;
 use App::Socialdump::Person;
+use DateTime::Format::DateParse;
 use 5.018;
 use strict;
 use warnings;
@@ -23,11 +24,14 @@ sub from_twitter {
     if ($json->{text} =~ /^RT @\w+:/) {
         $oc = 0;
     }
+    my $at = DateTime::Format::DateParse->parse_datetime(
+        $json->{created_at},
+    );
     return $class->new(
         author           => $author,
         oc               => $oc,
         text             => $json->{text},
-        created_at       => $json->{created_at},
+        created_at       => $at,
         retweeted_status => $retweet,
         quoted_status    => $quoted,
         media            => $json->{entities}{media},

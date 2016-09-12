@@ -3,6 +3,7 @@ requires "TAP::Harness" => "0";
 requires "Dancer2" => "0.203000";
 requires "Template" => "0";
 requires "File::Slurp" => "0";
+requires "DateTime::Format::DateParse" => "0";
 
 recommends "YAML"             => "0";
 recommends "URL::Encode::XS"  => "0";
