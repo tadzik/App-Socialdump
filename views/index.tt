@@ -13,9 +13,11 @@
         </div>
     </div>
     <div class="tweet">
+        [% IF status.oc %]
         <div class="tweet-text">
             [% status.text %]
         </div>
+        [% END %]
         [% IF status.entities.media %]
             <div class="media">
             [% FOREACH media IN status.entities.media %]
