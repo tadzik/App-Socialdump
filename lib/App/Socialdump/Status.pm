@@ -30,7 +30,7 @@ sub from_twitter {
         created_at       => $json->{created_at},
         retweeted_status => $retweet,
         quoted_status    => $quoted,
-        media            => $json->{media},
+        media            => $json->{entities}{media},
         external_url     => $author->profile_url . "/status/" . $json->{id},
     );
 }

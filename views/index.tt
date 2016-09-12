@@ -14,20 +14,20 @@
     </div>
     <div class="tweet">
         [% IF status.oc %]
-        <div class="tweet-text">
-            [% status.text %]
-        </div>
-        [% END %]
-        [% IF status.entities.media %]
-            <div class="media">
-            [% FOREACH media IN status.entities.media %]
-                [% IF media.type == "photo" %]
-                    <img src="[% media.media_url %]" alt="Img"/>
-                [% ELSE %]
-                    (Unsupported media type "[% media.type %]", <a href="[% media.url %]">Click here to see it</a>
-                [% END %]
-            [% END %]
+            <div class="tweet-text">
+                [% status.text %]
             </div>
+            [% IF status.media %]
+                <div class="media">
+                [% FOREACH media IN status.media %]
+                    [% IF media.type == "photo" %]
+                        <img src="[% media.media_url %]" alt="Img"/>
+                    [% ELSE %]
+                        (Unsupported media type "[% media.type %]", <a href="[% media.url %]">Click here to see it</a>
+                    [% END %]
+                [% END %]
+                </div>
+            [% END %]
         [% END %]
         [% IF status.retweeted_status %]
             Retweeted content:
