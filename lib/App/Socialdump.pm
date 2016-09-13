@@ -53,6 +53,20 @@ get '/' => sub {
             push @conversations, $convo;
         }
     }
+    # "unwrap" conversations that turned out to only have one participant:
+    # those are mere monologues, and we deal with them later
+    @conversations = grep {
+        if (scalar(@{$_->participants}) > 1) {
+            1;
+        } else {
+            for my $status (@{$_->statuses}) {
+                delete $statuses_in_conversations{$status->id}
+            }
+            0;
+        }
+    } @conversations;
+
+    # filter out what we deem conversations from statuses
     @statuses = grep { not $statuses_in_conversations{$_->id} } @statuses;
 
     # merge remaining statuses to aggregate monologues
@@ -70,19 +84,6 @@ get '/' => sub {
         unshift @$current_set, $_;
         $last_author = $_->author;
     }
-
-    # take all the conversations with only one participant and downgrade them to monologues
-    @conversations = grep {
-        if (scalar(@{$_->participants}) > 1) {
-            1;
-        } else {
-            push @monologues, App::Socialdump::Monologue->new(
-                author   => $_->statuses->[0]->author,
-                statuses => $_->statuses
-            );
-            0;
-        }
-    } @conversations;
 
     my @threads = reverse sort { DateTime->compare($a->highwater, $b->highwater) } (@conversations, @monologues);
 
