@@ -8,6 +8,11 @@
     </div>
 [% END %]
 
+[% BLOCK shortauthor %]
+    <img class="small-profile-img" src="[% author.avatar_url %]" />
+    [% author.displayname %]:
+[% END %]
+
 [% BLOCK tweetcontent %]
     <div class="tweet [% IF NOT status.has_oc %]pure-repost[% END %]">
         <div class="entry-postdate">
@@ -40,6 +45,7 @@
     </div>
 [% END %]
 
+[%# We only use this for retweets and quotes, which we know are singular %]
 [% BLOCK tweet %]
     [% PROCESS author author=status.author %]
     [% PROCESS tweetcontent status=status %]
@@ -49,6 +55,26 @@
     [% PROCESS author author=monologue.author %]
     [% FOREACH status IN monologue.statuses %]
         [% PROCESS tweetcontent status=status %]
+    [% END %]
+[% END %]
+
+[% BLOCK conversation %]
+    <table><tr>
+    [% FOREACH author IN thread.participants %]
+        <td>[% PROCESS author author=author %]</td>
+    [% END %]
+    </tr></table>
+    [% FOREACH status IN thread.statuses %]
+        [% PROCESS shortauthor author=status.author %]
+        [% PROCESS tweetcontent status=status %]
+    [% END %]
+[% END %]
+
+[% BLOCK thread %]
+    [% IF thread.isa('App::Socialdump::Monologue') %]
+        [% PROCESS monologue monologue=thread %]
+    [% ELSIF thread.isa('App::Socialdump::Conversation') %]
+        [% PROCESS conversation thread=thread %]
     [% END %]
 [% END %]
 
@@ -73,13 +99,9 @@
         </script>
     </div>
     <div id="content">
-    [% FOREACH monologue IN monologues %]
-        <div class="monologue [% IF NOT monologue.has_oc %]pure-repost[% END %]">
-            [% IF monologue.length() == 1 %]
-                [% PROCESS tweet status=monologue.statuses.0 %]
-            [% ELSE %]
-                [% PROCESS monologue monologue=monologue %]
-            [% END %]
+    [% FOREACH thread IN threads %]
+        <div class="thread [% IF NOT thread.has_oc %]pure-repost[% END %]">
+            [% PROCESS thread thread=thread %]
         </div>
     [% END %]
     </div>

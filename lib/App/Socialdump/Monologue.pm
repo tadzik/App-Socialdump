@@ -1,5 +1,4 @@
 package App::Socialdump::Monologue;
-use App::Socialdump::Person;
 use 5.018;
 use strict;
 use warnings;
@@ -22,4 +21,11 @@ sub has_oc {
     }
     return 0;
 }
+
+sub highwater {
+    my $self = shift;
+    my $last = scalar(@{$self->statuses}) - 1;
+    return $self->statuses->[$last]->created_at;
+}
+
 1;

@@ -6,7 +6,9 @@ use strict;
 use warnings;
 use Moo;
 
-has [qw/author
+has [qw/id
+        in_reply_to_id
+        author
         has_oc
         text
         created_at
@@ -28,6 +30,8 @@ sub from_twitter {
         $json->{created_at},
     );
     return $class->new(
+        id               => $json->{id},
+        in_reply_to_id   => $json->{in_reply_to_status_id},
         author           => $author,
         has_oc           => $has_oc,
         text             => $json->{text},

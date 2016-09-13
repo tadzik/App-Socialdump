@@ -1,12 +1,14 @@
 package App::Socialdump;
 use App::Socialdump::Status;
 use App::Socialdump::Monologue;
+use App::Socialdump::Conversation;
 use 5.018;
 use strict;
 use warnings;
 use Net::Twitter;
 use Dancer2;
 use File::Slurp;
+use DateTime;
 
 our $VERSION = '0.1';
 
@@ -25,13 +27,41 @@ get '/' => sub {
     my $raw = from_json read_file('100_tweets.json');
     my @statuses = map { App::Socialdump::Status->from_twitter($_) } @$raw;
 
-    # merge statuses to aggregate monologues
-    my @status_sets;
+    my %id_to_statuses;
+    for (@statuses) {
+        $id_to_statuses{$_->id} = $_;
+    }
+
+    my @conversations;
+    my %statuses_in_conversations;
+    for my $status (reverse @statuses) {
+        # skip if not a part of any conversation
+        next unless $status->in_reply_to_id;
+        # see if we already have a conversation with what this tweet is replying to
+        if (my $convo = $statuses_in_conversations{$status->in_reply_to_id}) {
+            $convo->add_status($status);
+            $statuses_in_conversations{$status->id} = $convo;
+        }
+        # if not, see if we even know what it's a reply to
+        elsif (my $parent = $id_to_statuses{$status->in_reply_to_id}) {
+            # they form a conversation, create a new one and add them both
+            my $convo = App::Socialdump::Conversation->new();
+            $convo->add_status($parent);
+            $convo->add_status($status);
+            $statuses_in_conversations{$parent->id} = $convo;
+            $statuses_in_conversations{$status->id} = $convo;
+            push @conversations, $convo;
+        }
+    }
+    @statuses = grep { not $statuses_in_conversations{$_->id} } @statuses;
+
+    # merge remaining statuses to aggregate monologues
+    my @monologues;
     my $last_author = $statuses[0]->author;
     my $current_set = [];
     for (@statuses) {
         if ($_->author->handle ne $last_author->handle) {
-            push @status_sets, App::Socialdump::Monologue->new(
+            push @monologues, App::Socialdump::Monologue->new(
                 author   => $last_author,
                 statuses => $current_set,
             );
@@ -41,7 +71,22 @@ get '/' => sub {
         $last_author = $_->author;
     }
 
-    template 'index', { monologues => \@status_sets };
+    # take all the conversations with only one participant and downgrade them to monologues
+    @conversations = grep {
+        if (scalar(@{$_->participants}) > 1) {
+            1;
+        } else {
+            push @monologues, App::Socialdump::Monologue->new(
+                author   => $_->statuses->[0]->author,
+                statuses => $_->statuses
+            );
+            0;
+        }
+    } @conversations;
+
+    my @threads = reverse sort { DateTime->compare($a->highwater, $b->highwater) } (@conversations, @monologues);
+
+    template 'index', { threads => \@threads };
 };
 
 true;

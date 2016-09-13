@@ -66,6 +66,12 @@ p {
 
 .profile-img { border-radius:5px; }
 
+.small-profile-img {
+    border-radius:5px;
+    max-height:14px;
+    max-width:14px;
+}
+
 .entry-header {
     margin-bottom:6px;
     display:flex;
@@ -89,6 +95,13 @@ p {
     margin:5px;
     border-radius:5px;
     background-color:#e6f2ff;
+}
+
+.thread {
+    margin:5px;
+    padding:5px;
+    border:1px solid black;
+    border-radius:5px;
 }
 
 .entry-external-url {
