@@ -7,8 +7,10 @@ use strict;
 use warnings;
 use Net::Twitter;
 use Dancer2;
+use Dancer2::Plugin::Database;
 use File::Slurp;
 use DateTime;
+use DateTime::Format::SQLite;
 
 our $VERSION = '0.1';
 
@@ -21,11 +23,42 @@ our $VERSION = '0.1';
 #    ssl => 1,
 #);
 
-get '/' => sub {
-    #my $raw = $nt->home_timeline({ count => 100 });
-    #write_file('100_tweets.json', to_json($raw));
-    my $raw = from_json read_file('100_tweets.json');
-    my @statuses = map { App::Socialdump::Status->from_twitter($_) } @$raw;
+sub check_for_new_tweets {
+    my $sth = database->prepare('select last_update, jsondata from timelines where id = ?');
+    $sth->execute(1);
+    my $row = $sth->fetchrow_hashref;
+    my $cached = from_json $row->{jsondata};
+
+    my $new_tweets = 0;
+
+    my $last_update = DateTime::Format::SQLite->parse_datetime($row->{last_update});
+    my $now = DateTime->now;
+    my $age = $now - $last_update;
+    if ($age->minutes > 1) {
+        warn "Updating the cache\n";
+        my $new = $nt->home_timeline({ count => 100 });
+        if ($new ne $cached) {
+            $new_tweets = 1;
+        }
+        my $sth = database->prepare('update timelines set last_update = ?, jsondata = ? where id = ?') or die database->errstr;
+        $sth->execute(DateTime::Format::SQLite->format_datetime($now), to_json($cached), 1);
+    }
+
+    return $new_tweets;
+}
+
+sub get_tweets {
+    # get the last cached version
+    my $sth = database->prepare('select last_update, jsondata from timelines where id = ?');
+    $sth->execute(1);
+    my $row = $sth->fetchrow_hashref;
+    my $cached = from_json $row->{jsondata};
+    return map { App::Socialdump::Status->from_twitter($_) } @$cached;
+}
+
+sub get_threads {
+    check_for_new_tweets();
+    my @statuses = get_tweets();
 
     my %id_to_statuses;
     for (@statuses) {
@@ -85,8 +118,11 @@ get '/' => sub {
         $last_author = $_->author;
     }
 
-    my @threads = reverse sort { DateTime->compare($a->highwater, $b->highwater) } (@conversations, @monologues);
+    return reverse sort { DateTime->compare($a->highwater, $b->highwater) } (@conversations, @monologues);
+}
 
+get '/' => sub {
+    my @threads = get_threads();
     template 'index', { threads => \@threads };
 };
 

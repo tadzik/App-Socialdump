@@ -3,3 +3,7 @@ layout: "main"
 charset: "UTF-8"
 template: "template_toolkit"
 
+plugins:
+    Database:
+        driver: 'SQLite'
+        database: 'cache.db'
