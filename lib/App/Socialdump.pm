@@ -34,14 +34,14 @@ sub check_for_new_tweets {
     my $last_update = DateTime::Format::SQLite->parse_datetime($row->{last_update});
     my $now = DateTime->now;
     my $age = $now - $last_update;
-    if ($age->minutes > 1) {
+    if ($age->minutes >= 1) {
         warn "Updating the cache\n";
         my $new = $nt->home_timeline({ count => 100 });
         if ($new ne $cached) {
             $new_tweets = 1;
         }
         my $sth = database->prepare('update timelines set last_update = ?, jsondata = ? where id = ?') or die database->errstr;
-        $sth->execute(DateTime::Format::SQLite->format_datetime($now), to_json($cached), 1);
+        $sth->execute(DateTime::Format::SQLite->format_datetime($now), to_json($new), 1);
     }
 
     return $new_tweets;
