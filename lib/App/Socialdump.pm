@@ -5,7 +5,7 @@ use App::Socialdump::Conversation;
 use 5.018;
 use strict;
 use warnings;
-use Net::Twitter;
+#use Net::Twitter;
 use Dancer2;
 use File::Slurp;
 use DateTime;
