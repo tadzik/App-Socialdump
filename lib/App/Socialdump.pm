@@ -8,20 +8,19 @@ use warnings;
 use Net::Twitter;
 use Dancer2;
 use Dancer2::Plugin::Database;
-use File::Slurp;
 use DateTime;
 use DateTime::Format::SQLite;
 
 our $VERSION = '0.1';
 
-#my $nt = Net::Twitter->new(
-#    traits => [qw/API::RESTv1_1/],
-#    consumer_key => config->{twitter}{consumer_key},
-#    consumer_secret => config->{twitter}{consumer_secret},
-#    access_token => config->{twitter}{access_token},
-#    access_token_secret => config->{twitter}{access_token_secret},
-#    ssl => 1,
-#);
+my $nt = Net::Twitter->new(
+    traits => [qw/API::RESTv1_1/],
+    consumer_key => config->{twitter}{consumer_key},
+    consumer_secret => config->{twitter}{consumer_secret},
+    access_token => config->{twitter}{access_token},
+    access_token_secret => config->{twitter}{access_token_secret},
+    ssl => 1,
+);
 
 sub check_for_new_tweets {
     my $sth = database->prepare('select last_update, jsondata from timelines where id = ?');

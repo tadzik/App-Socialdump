@@ -20,7 +20,7 @@
         </div>
         [% IF status.has_oc %]
             <div class="tweet-text">
-                [% status.text %]
+                [% status.html_text %]
             </div>
             [% IF status.media %]
                 <div class="media">
