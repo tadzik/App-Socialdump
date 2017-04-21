@@ -80,6 +80,8 @@ sub enrich_text($tweet) {
                "<a href=\"$ent->{url}\">$ent->{text}</a>";
     }
 
+    $text =~ s{\n}{<br />}g;
+
     return $text;
 }
 
