@@ -30,6 +30,13 @@ sub from_twitter($class, $json) {
     my $at = DateTime::Format::DateParse->parse_datetime(
         $json->{created_at},
     );
+    my @media;
+    if ($json->{extended_entities} and $json->{extended_entities}{media}) {
+        push @media, $json->{extended_entities}{media}->@*;
+    }
+    elsif ($json->{entities}{media}) {
+        push @media, $json->{entities}{media}->@*;
+    }
     return $class->new(
         id               => $json->{id},
         in_reply_to_id   => $json->{in_reply_to_status_id},
@@ -40,7 +47,7 @@ sub from_twitter($class, $json) {
         created_at       => $at,
         retweeted_status => $retweet,
         quoted_status    => $quoted,
-        media            => $json->{entities}{media},
+        media            => \@media,
         external_url     => $author->profile_url . "/status/" . $json->{id},
     );
 }
