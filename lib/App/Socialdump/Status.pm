@@ -42,7 +42,7 @@ sub from_twitter($class, $json) {
         in_reply_to_id   => $json->{in_reply_to_status_id},
         author           => $author,
         has_oc           => $has_oc,
-        text             => $json->{text},
+        text             => $json->{full_text},
         html_text        => enrich_text($json),
         created_at       => $at,
         retweeted_status => $retweet,
@@ -81,7 +81,7 @@ sub enrich_text($tweet) {
 
     @entities = sort { $b->{from} <=> $a->{from} } @entities;
 
-    my $text = $tweet->{text};
+    my $text = $tweet->{full_text};
     for my $ent (@entities) {
         substr $text, $ent->{from}, $ent->{to} - $ent->{from},
                "<a href=\"$ent->{url}\">$ent->{text}</a>";

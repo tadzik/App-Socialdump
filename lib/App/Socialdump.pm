@@ -5,16 +5,17 @@ use App::Socialdump::Conversation;
 use 5.018;
 use strict;
 use warnings;
-use Net::Twitter;
+use Twitter::API;
 use Dancer2;
 use Dancer2::Plugin::Database;
 use DateTime;
 use DateTime::Format::SQLite;
 
+use Data::Dumper;
 our $VERSION = '0.1';
 
-my $nt = Net::Twitter->new(
-    traits => [qw/API::RESTv1_1/],
+my $nt = Twitter::API->new_with_traits(
+    traits => [qw/ApiMethods Migration/],
     consumer_key => config->{twitter}{consumer_key},
     consumer_secret => config->{twitter}{consumer_secret},
     access_token => config->{twitter}{access_token},
@@ -35,7 +36,7 @@ sub check_for_new_tweets {
     my $age = $now - $last_update;
     if ($age->minutes >= 1) {
         warn "Updating the cache\n";
-        my $new = $nt->home_timeline({ count => 100 });
+        my $new = $nt->get('statuses/home_timeline', { count => 100, tweet_mode => 'extended' });
         if ($new ne $cached) {
             $new_tweets = 1;
         }

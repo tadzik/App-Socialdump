@@ -2,11 +2,12 @@ requires 'perl', '5.24.0';
 requires "TAP::Harness" => "0";
 
 requires "Dancer2" => "0.203000";
+requires "Dancer2::Plugin::Database";
 requires "Template" => "0";
 requires "DateTime::Format::DateParse" => "0";
 requires "DateTime::Format::SQLite" => "0";
 requires "DBD::SQLite" => "0";
-requires "Net::Twitter" => "0";
+requires "Twitter::API" => "0";
 
 recommends "YAML"             => "0";
 recommends "URL::Encode::XS"  => "0";
