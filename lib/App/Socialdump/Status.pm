@@ -24,7 +24,7 @@ sub from_twitter($class, $json) {
     my $quoted  = $json->{quoted_status}    ? $class->from_twitter($json->{quoted_status})    : undef;
     my $author  = App::Socialdump::Person->from_twitter($json->{user});
     my $has_oc = 1;
-    if ($json->{text} =~ /^RT @\w+:/) {
+    if ($json->{full_text} =~ /^RT @\w+:/) {
         $has_oc = 0;
     }
     my $at = DateTime::Format::DateParse->parse_datetime(
