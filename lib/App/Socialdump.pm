@@ -7,7 +7,7 @@ use strict;
 use warnings;
 use Twitter::API;
 use Dancer2;
-use Dancer2::Plugin::Database;
+use Dancer2::Plugin::DBIC;
 use DateTime;
 use DateTime::Format::SQLite;
 
@@ -24,36 +24,30 @@ my $nt = Twitter::API->new_with_traits(
 );
 
 sub check_for_new_tweets {
-    my $sth = database->prepare('select last_update, jsondata from timelines where id = ?');
-    $sth->execute(1);
-    my $row = $sth->fetchrow_hashref;
-    my $cached = from_json $row->{jsondata};
+    my $maxid = resultset('Tweet')->get_column('id')->max;
 
-    my $new_tweets = 0;
-
-    my $last_update = DateTime::Format::SQLite->parse_datetime($row->{last_update});
-    my $now = DateTime->now;
-    my $age = $now - $last_update;
-    if ($age->minutes >= 1) {
-        warn "Updating the cache\n";
-        my $new = $nt->get('statuses/home_timeline', { count => 100, tweet_mode => 'extended' });
-        if ($new ne $cached) {
-            $new_tweets = 1;
-        }
-        my $sth = database->prepare('update timelines set last_update = ?, jsondata = ? where id = ?') or die database->errstr;
-        $sth->execute(DateTime::Format::SQLite->format_datetime($now), to_json($new), 1);
+    #my $last_update = DateTime::Format::SQLite->parse_datetime($row->{last_update});
+    #my $now = DateTime->now;
+    #my $age = $now - $last_update;
+    #if ($age->minutes >= 1) {
+    my $tweets;
+    if ($maxid) {
+        $tweets = $nt->get('statuses/home_timeline', { since_id => $maxid, tweet_mode => 'extended' });
+    } else {
+        $tweets = $nt->get('statuses/home_timeline', { tweet_mode => 'extended' });
     }
-
-    return $new_tweets;
+    for (@$tweets) {
+        resultset('Tweet')->create({
+            id       => $_->{id},
+            jsondata => to_json($_),
+        });
+    }
 }
 
 sub get_tweets {
-    # get the last cached version
-    my $sth = database->prepare('select last_update, jsondata from timelines where id = ?');
-    $sth->execute(1);
-    my $row = $sth->fetchrow_hashref;
-    my $cached = from_json $row->{jsondata};
-    return map { App::Socialdump::Status->from_twitter($_) } @$cached;
+    return map {
+        App::Socialdump::Status->from_twitter(from_json($_->jsondata))
+    } resultset('Tweet')->search;
 }
 
 sub get_threads {

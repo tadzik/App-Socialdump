@@ -4,6 +4,9 @@ charset: "UTF-8"
 template: "template_toolkit"
 
 plugins:
-    Database:
-        driver: 'SQLite'
-        database: 'cache.db'
+    DBIC:
+        default:
+            dsn: 'dbi:SQLite:dbname=database.db'
+            schema_class: 'App::Socialdump::Schema'
+            options:
+                sqlite_unicode: 1

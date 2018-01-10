@@ -7,6 +7,8 @@ use strict;
 use warnings;
 use Moo;
 
+no warnings 'experimental::signatures';
+
 has [qw/id
         in_reply_to_id
         author

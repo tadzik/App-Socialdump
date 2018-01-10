@@ -2,7 +2,7 @@ requires 'perl', '5.24.0';
 requires "TAP::Harness" => "0";
 
 requires "Dancer2" => "0.203000";
-requires "Dancer2::Plugin::Database";
+requires "Dancer2::Plugin::DBIC";
 requires "Template" => "0";
 requires "DateTime::Format::DateParse" => "0";
 requires "DateTime::Format::SQLite" => "0";
